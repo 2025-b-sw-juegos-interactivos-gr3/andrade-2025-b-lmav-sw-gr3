@@ -1,0 +1,9 @@
+{
+  "name": "babylonjs-playground01",
+  "version": "1.0.0",
+  "description": "Playground local de Babylon.js (escena simple)",
+  "scripts": {
+    "serve": "npx http-server -c-1 -p 5500"
+  },
+  "devDependencies": {}
+}
