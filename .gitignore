@@ -3,46 +3,36 @@ node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-package-lock.json
-pnpm-lock.yaml
+pnpm-debug.log*
 
-# http-server cache (if any)
-.cache/
+# Mantén package-lock.json (no lo ignores)
+# (asegura instalaciones reproducibles)
 
-# VS Code
-.vscode/
-.history/
-
-# Windows
-Thumbs.db
-ehthumbs.db
-Desktop.ini
-$RECYCLE.BIN/
-
-# Mac
-.DS_Store
-
-# Logs
-logs/
-*.log
-
-# Build outputs
+# Builds / cobertura / caches
 dist/
 build/
+out/
+coverage/
+.cache/
+.tmp/
+.temp/
 
-# OS generated
-*.swp
-*.swo
-
-# JetBrains
-.idea/
-
-# Misc
+# Entorno
 .env
-.env.local
+.env.*
 
-# Allow playground files
-# keep track of source files created by the student
-!01 - Babylonjs/*.html
-!01 - Babylonjs/*.js
-!01 - Babylonjs/*.json
+# OS
+.DS_Store
+Thumbs.db
+
+# Editores (opcional)
+.vscode/
+.idea/
+*.code-workspace
+
+# Si quieres mantener algunos archivos de .vscode, usa esto en lugar de ignorar toda la carpeta:
+# .vscode/*
+# !.vscode/tasks.json
+# !.vscode/launch.json
+# !.vscode/extensions.json
+# !.vscode/settings.json
