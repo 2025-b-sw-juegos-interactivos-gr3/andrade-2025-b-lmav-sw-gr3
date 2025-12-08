@@ -5,5 +5,7 @@
   "scripts": {
     "serve": "npx http-server -c-1 -p 5500"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
 }
