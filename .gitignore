@@ -1,0 +1,48 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+pnpm-lock.yaml
+
+# http-server cache (if any)
+.cache/
+
+# VS Code
+.vscode/
+.history/
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Mac
+.DS_Store
+
+# Logs
+logs/
+*.log
+
+# Build outputs
+dist/
+build/
+
+# OS generated
+*.swp
+*.swo
+
+# JetBrains
+.idea/
+
+# Misc
+.env
+.env.local
+
+# Allow playground files
+# keep track of source files created by the student
+!01 - Babylonjs/*.html
+!01 - Babylonjs/*.js
+!01 - Babylonjs/*.json
