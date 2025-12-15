@@ -1,0 +1,30 @@
+{
+  "name": "uber-eats-delivery-game",
+  "version": "1.0.0",
+  "description": "Juego 3D de entregas de Uber Eats para examen de Babylon.js",
+  "main": "src/main.js",
+  "type": "module",
+  "scripts": {
+    "start": "live-server --port=8080 --open=./index.html --host=localhost",
+    "dev": "live-server --port=3000 --open=./index.html --entry-file=./index.html",
+    "build": "echo 'Build completado'"
+  },
+  "dependencies": {
+    "babylonjs": "^6.32.0",
+    "babylonjs-loaders": "^6.32.0",
+    "babylonjs-gui": "^6.32.0",
+    "babylonjs-procedural-textures": "^6.32.0"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  },
+  "keywords": [
+    "babylonjs",
+    "3d-game",
+    "examen",
+    "uber-eats",
+    "delivery-game"
+  ],
+  "author": "Tu Nombre",
+  "license": "MIT"
+}

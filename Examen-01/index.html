@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uber Eats Delivery - Examen 01</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+    <script src="https://cdn.babylonjs.com/gui/babylon.gui.min.js"></script>
+    <script src="https://cdn.babylonjs.com/proceduralTexturesLibrary/babylonjs.proceduralTextures.min.js"></script>
+</head>
+<body>
+    <!-- Contenedor principal del juego -->
+    <div id="gameContainer">
+        <canvas id="renderCanvas"></canvas>
+        
+        <!-- Pantalla de inicio -->
+        <div id="startScreen" class="screen">
+            <div class="screen-content">
+                <h1><i class="fas fa-car"></i> UBER EATS DELIVERY</h1>
+                <p class="subtitle">Simulador de entregas 3D</p>
+                
+                <div class="instructions">
+                    <h2><i class="fas fa-info-circle"></i> Instrucciones:</h2>
+                    <ul>
+                        <li><i class="fas fa-hamburger"></i> Recoge pedidos de los restaurantes</li>
+                        <li><i class="fas fa-home"></i> Entrégalos en las casas correspondientes</li>
+                        <li><i class="fas fa-star"></i> Completa el máximo de entregas posibles</li>
+                    </ul>
+                </div>
+                
+                <div class="controls">
+                    <h2><i class="fas fa-gamepad"></i> Controles:</h2>
+                    <div class="control-row">
+                        <span class="key">W/A/S/D</span>
+                        <span class="desc">Mover el coche</span>
+                    </div>
+                    <div class="control-row">
+                        <span class="key">ESPACIO</span>
+                        <span class="desc">Recoger/Entregar</span>
+                    </div>
+                    <div class="control-row">
+                        <span class="key">R</span>
+                        <span class="desc">Reiniciar posición</span>
+                    </div>
+                    <div class="control-row">
+                        <span class="key">ESC</span>
+                        <span class="desc">Menú pausa</span>
+                    </div>
+                </div>
+                
+                <button id="startButton" class="btn-primary">
+                    <i class="fas fa-play"></i> COMENZAR JUEGO
+                </button>
+                
+                <div class="version">Examen 01 - Babylon.js</div>
+            </div>
+        </div>
+        
+        <!-- Interfaz de juego -->
+        <div id="gameUI" class="ui-container" style="display: none;">
+            <!-- Panel izquierdo - Información del juego -->
+            <div class="panel left-panel">
+                <div class="panel-header">
+                    <i class="fas fa-info-circle"></i> INFORMACIÓN DEL JUEGO
+                </div>
+                <div class="panel-content">
+                    <div class="stat-item">
+                        <span class="stat-label">Estado:</span>
+                        <span id="gameStatus" class="stat-value waiting">Esperando pedido</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Pedido actual:</span>
+                        <span id="currentOrder" class="stat-value">Ninguno</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Restaurante:</span>
+                        <span id="restaurantName" class="stat-value">-</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Casa destino:</span>
+                        <span id="houseName" class="stat-value">-</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Panel derecho - Estadísticas -->
+            <div class="panel right-panel">
+                <div class="panel-header">
+                    <i class="fas fa-chart-line"></i> ESTADÍSTICAS
+                </div>
+                <div class="panel-content">
+                    <div class="stat-item">
+                        <span class="stat-label">Entregas:</span>
+                        <span id="deliveryCount" class="stat-value highlight">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Puntos:</span>
+                        <span id="scorePoints" class="stat-value highlight">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Nivel:</span>
+                        <span id="gameLevel" class="stat-value highlight">1</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Tiempo:</span>
+                        <span id="gameTimer" class="stat-value">00:00</span>
+                    </div>
+                </div>
+                
+                <div class="panel-buttons">
+                    <button id="pauseButton" class="btn-small">
+                        <i class="fas fa-pause"></i> Pausa
+                    </button>
+                    <button id="resetButton" class="btn-small">
+                        <i class="fas fa-redo"></i> Reiniciar
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Indicador de objetivos -->
+            <div class="objective-indicator">
+                <div class="objective-item">
+                    <i class="fas fa-utensils objective-icon restaurant"></i>
+                    <span>Recoger pedido</span>
+                </div>
+                <div class="objective-arrow">
+                    <i class="fas fa-arrow-right"></i>
+                </div>
+                <div class="objective-item">
+                    <i class="fas fa-home objective-icon house"></i>
+                    <span>Entregar pedido</span>
+                </div>
+            </div>
+            
+            <!-- Mini mapa -->
+            <div id="miniMap" class="mini-map">
+                <div class="mini-map-header">
+                    <i class="fas fa-map"></i> MAPA
+                </div>
+                <canvas id="miniMapCanvas"></canvas>
+            </div>
+        </div>
+        
+        <!-- Pantalla de pausa -->
+        <div id="pauseScreen" class="screen" style="display: none;">
+            <div class="screen-content">
+                <h1><i class="fas fa-pause"></i> JUEGO EN PAUSA</h1>
+                <div class="pause-stats">
+                    <div class="stat-box">
+                        <i class="fas fa-truck"></i>
+                        <div class="stat-number" id="pauseDeliveries">0</div>
+                        <div class="stat-label">Entregas</div>
+                    </div>
+                    <div class="stat-box">
+                        <i class="fas fa-star"></i>
+                        <div class="stat-number" id="pauseScore">0</div>
+                        <div class="stat-label">Puntos</div>
+                    </div>
+                    <div class="stat-box">
+                        <i class="fas fa-clock"></i>
+                        <div class="stat-number" id="pauseTime">00:00</div>
+                        <div class="stat-label">Tiempo</div>
+                    </div>
+                </div>
+                <button id="resumeButton" class="btn-primary">
+                    <i class="fas fa-play"></i> CONTINUAR
+                </button>
+                <button id="restartButton" class="btn-secondary">
+                    <i class="fas fa-redo"></i> REINICIAR JUEGO
+                </button>
+                <button id="menuButton" class="btn-secondary">
+                    <i class="fas fa-home"></i> MENÚ PRINCIPAL
+                </button>
+            </div>
+        </div>
+        
+        <!-- Pantalla de juego terminado -->
+        <div id="gameOverScreen" class="screen" style="display: none;">
+            <div class="screen-content">
+                <h1><i class="fas fa-flag-checkered"></i> JUEGO TERMINADO</h1>
+                <div class="final-stats">
+                    <h2>RESUMEN FINAL</h2>
+                    <div class="final-stat">
+                        <span>Entregas completadas:</span>
+                        <span id="finalDeliveries" class="final-value">0</span>
+                    </div>
+                    <div class="final-stat">
+                        <span>Puntuación total:</span>
+                        <span id="finalScore" class="final-value">0</span>
+                    </div>
+                    <div class="final-stat">
+                        <span>Tiempo total:</span>
+                        <span id="finalTime" class="final-value">00:00</span>
+                    </div>
+                    <div class="final-stat">
+                        <span>Nivel alcanzado:</span>
+                        <span id="finalLevel" class="final-value">1</span>
+                    </div>
+                </div>
+                <button id="playAgainButton" class="btn-primary">
+                    <i class="fas fa-play-circle"></i> JUGAR DE NUEVO
+                </button>
+                <button id="backToMenuButton" class="btn-secondary">
+                    <i class="fas fa-home"></i> MENÚ PRINCIPAL
+                </button>
+            </div>
+        </div>
+        
+        <!-- Notificaciones -->
+        <div id="notificationContainer" class="notification-container"></div>
+        
+        <!-- Debug info (opcional) -->
+        <div id="debugInfo" class="debug-info">
+            <div>FPS: <span id="fpsCounter">60</span></div>
+            <div>Posición: <span id="playerPosition">0, 0, 0</span></div>
+            <div>Velocidad: <span id="playerSpeed">0</span></div>
+        </div>
+    </div>
+    
+    <!-- Script principal del juego -->
+    <script type="module" src="src/main.js"></script>
+</body>
+</html>

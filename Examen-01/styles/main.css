@@ -1,0 +1,488 @@
+/* Reset y estilos base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: #fff;
+    overflow: hidden;
+    height: 100vh;
+}
+
+/* Contenedor principal del juego */
+#gameContainer {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+}
+
+#renderCanvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+    outline: none;
+}
+
+/* Pantallas superpuestas */
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.screen-content {
+    background: rgba(26, 26, 46, 0.95);
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 800px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    border: 2px solid #00cc66;
+}
+
+.screen h1 {
+    color: #00cc66;
+    font-size: 3rem;
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px rgba(0, 204, 102, 0.5);
+}
+
+.screen .subtitle {
+    color: #88ddff;
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    font-weight: 300;
+}
+
+/* Paneles de la UI */
+.ui-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 100;
+}
+
+.ui-container > * {
+    pointer-events: auto;
+}
+
+.panel {
+    position: absolute;
+    background: rgba(26, 26, 46, 0.9);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(0, 204, 102, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.left-panel {
+    top: 20px;
+    left: 20px;
+    width: 300px;
+}
+
+.right-panel {
+    top: 20px;
+    right: 20px;
+    width: 250px;
+}
+
+.panel-header {
+    color: #00cc66;
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(0, 204, 102, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.panel-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stat-label {
+    color: #88ddff;
+    font-size: 0.9rem;
+}
+
+.stat-value {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.stat-value.waiting {
+    color: #ffaa00;
+}
+
+.stat-value.delivering {
+    color: #00cc66;
+}
+
+.stat-value.completed {
+    color: #00ff88;
+}
+
+.stat-value.highlight {
+    color: #00ff88;
+    font-size: 1.2rem;
+}
+
+/* Botones */
+.btn-primary, .btn-secondary, .btn-small {
+    padding: 15px 30px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 10px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #00cc66 0%, #00ff88 100%);
+    color: #fff;
+    box-shadow: 0 5px 15px rgba(0, 204, 102, 0.4);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 204, 102, 0.6);
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: 2px solid #00cc66;
+}
+
+.btn-secondary:hover {
+    background: rgba(0, 204, 102, 0.2);
+}
+
+.btn-small {
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    margin: 5px;
+}
+
+.panel-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+/* Indicador de objetivos */
+.objective-indicator {
+    position: absolute;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(26, 26, 46, 0.9);
+    border-radius: 15px;
+    padding: 15px 30px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    border: 2px solid rgba(0, 204, 102, 0.5);
+}
+
+.objective-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.objective-icon {
+    font-size: 2rem;
+    padding: 10px;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.objective-icon.restaurant {
+    background: rgba(255, 215, 0, 0.2);
+    color: #ffd700;
+    border: 2px solid #ffd700;
+}
+
+.objective-icon.house {
+    background: rgba(255, 105, 180, 0.2);
+    color: #ff69b4;
+    border: 2px solid #ff69b4;
+}
+
+.objective-arrow {
+    color: #00cc66;
+    font-size: 1.5rem;
+}
+
+/* Mini mapa */
+.mini-map {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 200px;
+    height: 200px;
+    background: rgba(26, 26, 46, 0.9);
+    border-radius: 15px;
+    padding: 10px;
+    border: 2px solid rgba(0, 204, 102, 0.5);
+}
+
+.mini-map-header {
+    color: #00cc66;
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+#miniMapCanvas {
+    width: 100%;
+    height: calc(100% - 25px);
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+/* Estadísticas en pausa */
+.pause-stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin: 30px 0;
+}
+
+.stat-box {
+    background: rgba(0, 204, 102, 0.1);
+    border-radius: 15px;
+    padding: 20px;
+    min-width: 120px;
+    border: 2px solid #00cc66;
+}
+
+.stat-box i {
+    font-size: 2.5rem;
+    color: #00cc66;
+    margin-bottom: 10px;
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #00ff88;
+    margin: 10px 0;
+}
+
+.stat-label {
+    color: #88ddff;
+    font-size: 0.9rem;
+}
+
+/* Estadísticas finales */
+.final-stats {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    padding: 25px;
+    margin: 25px 0;
+    text-align: left;
+}
+
+.final-stats h2 {
+    color: #00cc66;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.final-stat {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.final-value {
+    color: #00ff88;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+/* Instrucciones y controles */
+.instructions, .controls {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+    text-align: left;
+}
+
+.instructions h2, .controls h2 {
+    color: #00cc66;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.instructions ul {
+    list-style: none;
+    padding-left: 10px;
+}
+
+.instructions li {
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.control-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.key {
+    background: rgba(0, 204, 102, 0.2);
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid #00cc66;
+    font-family: monospace;
+    min-width: 80px;
+    text-align: center;
+}
+
+.desc {
+    color: #88ddff;
+}
+
+/* Notificaciones */
+.notification-container {
+    position: absolute;
+    top: 150px;
+    right: 20px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 200;
+}
+
+.notification {
+    background: rgba(26, 26, 46, 0.95);
+    border-radius: 10px;
+    padding: 15px;
+    border-left: 5px solid #00cc66;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transform: translateX(100%);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.notification.success {
+    border-left-color: #00cc66;
+}
+
+.notification.info {
+    border-left-color: #0099ff;
+}
+
+.notification.warning {
+    border-left-color: #ffaa00;
+}
+
+/* Debug info */
+.debug-info {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    border-radius: 5px;
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: #88ddff;
+    opacity: 0.7;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .left-panel, .right-panel {
+        width: 95%;
+        position: relative;
+        top: auto;
+        left: auto;
+        right: auto;
+        margin: 10px auto;
+    }
+    
+    .mini-map {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .objective-indicator {
+        flex-direction: column;
+        gap: 10px;
+        width: 90%;
+        bottom: 200px;
+    }
+    
+    .screen h1 {
+        font-size: 2rem;
+    }
+    
+    .btn-primary, .btn-secondary {
+        padding: 12px 24px;
+        font-size: 1rem;
+    }
+}
+
+.version {
+    margin-top: 30px;
+    color: #666;
+    font-size: 0.8rem;
+    font-style: italic;
+}
